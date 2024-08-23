@@ -5,6 +5,12 @@ services:
   database:
     build: ./databases
     container_name: mysql-db
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -prootadmin || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
 
   # Node.js Backend Service
   backend:
