@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  # MySQL Database Service
+  database:
+    build: ./databases
+    container_name: mysql-db
+
+  # Node.js Backend Service
+  backend:
+    build: ./backend
+    container_name: node-backend
+    environment:
+      DATABASE_HOST: database
+      MYSQL_ROOT_PASSWORD: rootadmin
+      MYSQL_DATABASE: book_management
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+
+  # React Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: react-frontend
+    ports:
+      - "3001:3000"
+    depends_on:
+      - backend
